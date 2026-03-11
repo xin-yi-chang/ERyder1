@@ -6,14 +6,33 @@ public class ERyder {
     public boolean isAvailable;
     public float kmDriven;
 
+    private static final String COMPANY_NAME = "ERyder";
+    private static final double BASE_FARE = 1.0;
+    private static final double PER_MINUTE_FARE = 0.5;
+
+    private final String LINKED_ACCOUNT;
+    private final long LINKED_PHONE_NUMBER;
+
+    private int usageInMinutes;
+    private double totalFare;
+    
     //constructor
-    public ERyder(String bikeID, int batteryLevel, boolean isAvailable, float kmDriven) {
+    public ERyder(String bikeID, int batteryLevel, boolean isAvailable, float kmDriven){
         this.bikeID = bikeID;
         this.batteryLevel = batteryLevel;
         this.isAvailable = isAvailable;
         this.kmDriven = kmDriven;
+        LINKED_ACCOUNT = "cxy";
+        LINKED_PHONE_NUMBER = 12345678;
     }
-    public ERyder() {}
+    public ERyder(String bikeID, int batteryLevel, boolean isAvailable, float kmDriven, String linkedAccount, long linkedPhoneNumber) {
+        this.bikeID = bikeID;
+        this.batteryLevel = batteryLevel;
+        this.isAvailable = isAvailable;
+        this.kmDriven = kmDriven;
+        LINKED_ACCOUNT = linkedAccount;
+        LINKED_PHONE_NUMBER = linkedPhoneNumber;
+    }
     public void ride()
     
     {
@@ -38,7 +57,20 @@ public class ERyder {
         }
         System.out.println("Its distance is " + kmDriven + " km.");
     }
-    //Methods
+    public void printRideDetails(int usageInMinutes){
+        System.out.println("The linked account is "+LINKED_ACCOUNT+".");
+        System.out.println("The linked phone number is "+LINKED_PHONE_NUMBER+".");
+        System.out.println("The bike ID is "+bikeID+".");
+        System.out.println("The usage in minutes is "+usageInMinutes+".");
+        System.out.println("The total fare is "+calculateFare(usageInMinutes)+".");
+    }
+    private double calculateFare(int usageInMinutes){
+        totalFare = BASE_FARE + (PER_MINUTE_FARE*usageInMinutes);
+        return usageInMinutes*PER_MINUTE_FARE+BASE_FARE;
+    }
+    public double getTotalFare(int usageInMinutes){
+        return calculateFare(usageInMinutes);
+    }
     public String getbikeID(){
         return bikeID;
     }
