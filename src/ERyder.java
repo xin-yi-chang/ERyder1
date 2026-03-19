@@ -1,5 +1,5 @@
-public class ERyder {
-
+public class ERyder
+{
     //variables
     private String bikeID;
     private int batteryLevel;

@@ -1,4 +1,5 @@
-public class Main {
+public class Main
+{
     public static void main(String[] args) throws Exception{
         ERyder bike1 = new ERyder("2",200,true,2000.1f,"cxy",12345678);
         bike1.ride();
@@ -20,5 +21,10 @@ public class Main {
         Feedback feedback = new Feedback("John", "Walker", "3422278532@qq.com");
         feedback.analyseFeedBack(false, sent1, sent2, sent3, sent4, sent5); 
         System.out.println(feedback);
+
+        UserRegistration userRegistration = new UserRegistration();
+        userRegistration.registration();
+        System.out.println(userRegistration);
     }
 }
+
