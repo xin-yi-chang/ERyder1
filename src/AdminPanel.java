@@ -17,7 +17,8 @@ public class AdminPanel
                         "2.View Registered Users\r\n" + //
                         "3.Remove Registered Users\r\n" + //
                         "4.Update Registered Users\r\n" + //
-                        "5.EXIT\r\n" + //
+                        "5.Demo the Bike Rental System\r\n" + //
+                        "6.EXIT\r\n" + //
                         "Enter your choice:");
         int choice = sc.nextInt();
         sc.nextLine();
@@ -36,6 +37,10 @@ public class AdminPanel
                 updateRegisteredUsers();
                 break;
             case 5:
+                BikeRental bikeRental = new BikeRental();
+                bikeRental.simulateApplicationInput();
+                break;
+            case 6:
                 System.out.println("Exit the program.");
                 System.exit(0);
                 break;
