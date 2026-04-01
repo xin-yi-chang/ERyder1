@@ -11,8 +11,8 @@ public class BikeService {
     public void reserveBike(String bikeID){
         if(bikeID!=null){
             for(Bike bike:BikeDatabase.bikes){
-                if(bikeID.equals(bike.getBikeID()))tripStartTime = LocalDateTime.now();
-                bike.setIsAvailable(false);
+                if(bikeID.equals(bike.getbikeID()))tripStartTime = LocalDateTime.now();
+                bike.setAvailable(false);
                 bike.setLastUsedTime(tripStartTime);
                 System.out.println(" Reserving the bike with the "+bikeID+". Please following the on-screen instructions." + 
                                         "to locate the bike and start your pleasant journey.");
@@ -35,10 +35,10 @@ public class BikeService {
     }
     public String validateLocation(String location){
         for(Bike bike : BikeDatabase.bikes){
-            if(location.equals(bike.getLocation()) && bike.getIsAvailable()){
+            if(location.equals(bike.getLocation()) && bike.isAvailable()){
                 System.out.println("A bike is available at the location you requested.");
                 locationValid = true;
-                return bike.getBikeID();
+                return bike.getbikeID();
             }
 
         }
@@ -58,8 +58,8 @@ public class BikeService {
         Iterator<Bike>bikeIterator = BikeDatabase.bikes.iterator();
         while(bikeIterator.hasNext()){
             Bike bike = bikeIterator.next();
-            if(bike.getBikeID().equals(bikeID)){
-                bike.setIsAvailable(true);
+            if(bike.getbikeID().equals(bikeID)){
+                bike.setAvailable(true);
                 bike.setLastUsedTime(LocalDateTime.now());
                 System.out.println("Your trip has ended. Thank you for riding with us.");
                 break;
