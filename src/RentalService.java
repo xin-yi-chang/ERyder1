@@ -11,18 +11,28 @@ public class RentalService {
     private boolean locationValid;
     UserRegistration userRegistration = new UserRegistration();
     LinkedList<ActiveRental> activeRentalsList = new LinkedList<>();
+    public RentalService(BikeService bikeService) {
+        this.bikeService = bikeService;
+    }
+    public void setLocationValid(boolean valid){
+        locationValid=valid;
+    }
     public void simulateApplicationInput(){
         System.out.println("This is the simulation of the e-bike rental process.");
+        System.out.println("Are you a registered user?");
         Scanner sc = new Scanner(System.in);
         isRegisteredUser = sc.nextBoolean();
         sc.nextLine();
+        System.out.println("Please enter your email address");
         emailAddress = sc.nextLine();
+        System.out.println("Please enter your location");
         location = sc.nextLine();
         System.out.println("Simulating the analysis of the rental request.");
         bikeID = analyseRequest(isRegisteredUser,emailAddress,location);
+        if(bikeID!=null)locationValid=true;
         if(!locationValid)
         {
-            sc.close();
+            //sc.close();
             return;
         }
         System.out.println("Simulating e-bike reservation…");
@@ -32,7 +42,7 @@ public class RentalService {
         bikeService.removeTrip(bikeID);
         System.out.println("Displaying the active rentals after trip end…");
         viewActiveRentals();
-        sc.close();
+        //sc.close();
 
     }
     private String analyseRequest(boolean isRegistered,String emailAddress,String location){
@@ -40,7 +50,6 @@ public class RentalService {
         else{
             System.out.println(" You’re not our registered user. Please consider registering.");
             userRegistration.registration();
-            
         }
         return bikeService.validateLocation(location);
     }

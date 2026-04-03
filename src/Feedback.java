@@ -21,7 +21,6 @@ public class Feedback {
     public String getEmail(){
         return email;
     }
-
     public void analyseFeedBack(boolean isConcatenation, String sent1, String sent2,String sent3,String sent4,String sent5){
         if(isConcatenation){
             completeFeedback = feedbackUsingConcatenation(sent1,sent2,sent3,sent4,sent5);
@@ -33,23 +32,16 @@ public class Feedback {
             createReviewID(firstName, lastName, completeFeedback);
         }
     }
-
     private String feedbackUsingConcatenation(String sent1,String sent2,String sent3,String sent4,String sent5){
-        String concatenatedFeedback=sent1+" ";
-        concatenatedFeedback+=sent2+" ";
-        concatenatedFeedback+=sent3+" "+sent4+" "+sent5;
+        String concatenatedFeedback="";
+        concatenatedFeedback = sent1+" "+sent2+" "+sent3+" "+sent4+" "+sent5;
         return concatenatedFeedback;
     }
-    
     private StringBuilder feedbackUsingStringBuilder(String sent1,String sent2,String sent3,String sent4,String sent5){
         StringBuilder sb = new StringBuilder();
-        sb.append(sent1).append(" ");
-        sb.append(sent2).append(" ");
-        sb.append(sent3).append(" ");
-        sb.append(sent4).append(" ").append(sent5);
+        sb.append(sent1).append(" ").append(sent2).append(" ").append(sent3).append(" ").append(sent4).append(" ").append(sent5);
         return sb;
     }
-
     private boolean checkFeedbackLength(String completeFeedback){
         if(completeFeedback.length()>500){
             longFeedback = true;
@@ -59,7 +51,6 @@ public class Feedback {
             return longFeedback;
         }
     }
-
     private void createReviewID(String firstName,String lastName,String completeFeedBack){
         reviewID=(firstName+lastName).substring(2,6).toUpperCase();
         reviewID+=completeFeedBack.substring(10,15).toLowerCase();
@@ -71,8 +62,8 @@ public class Feedback {
 
     @Override
     public String toString(){
-        return "\nFeedback from " + firstName+ " "+lastName+" {"+email+"}\n\n"+
-        "All Feedback: "+completeFeedback+"\n\nIf the feedback is longer than 500? "+longFeedback+
-        "\n\nThe review ID: "+reviewID;
+        return "=========================\nFeedback from " + firstName+ " "+lastName+" {"+email+"}\n\n"+
+        "Feedback: "+completeFeedback+"\n\nIf the feedback is long than 500? "+longFeedback+
+        "\n\nThe review ID: "+reviewID+"\n===========================";
     }
 }

@@ -1,5 +1,8 @@
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Iterator;
 public class BikeService {
     private String emailAddress;
@@ -7,18 +10,39 @@ public class BikeService {
     private boolean locationValid;
     UserRegistration userRegistration = new UserRegistration();
     LinkedList<ActiveRental> activeRentalsList = new LinkedList<>();
-    RentalService rentalService = new RentalService();
+    private Deque<ERyderLog> systemLogs = new ArrayDeque<>();
+
+    Queue<BikeRequest>bikeRequest = new ArrayDeque<>();
     public void reserveBike(String bikeID){
         if(bikeID!=null){
             for(Bike bike:BikeDatabase.bikes){
-                if(bikeID.equals(bike.getbikeID()))tripStartTime = LocalDateTime.now();
-                bike.setAvailable(false);
-                bike.setLastUsedTime(tripStartTime);
-                System.out.println(" Reserving the bike with the "+bikeID+". Please following the on-screen instructions." + 
+                if(bikeID.equals(bike.getBikeID())){
+                    String logId = "BR" + System.currentTimeMillis();
+                    String event = "Bike with bikeID " + bikeID + " was rented by " + emailAddress + " from " + bike.getLocation();
+                    LocalDateTime timestamp = LocalDateTime.now();
+        
+                    ERyderLog rentLog = new ERyderLog(logId, event, timestamp);
+                    systemLogs.push(rentLog);
+
+                    tripStartTime = LocalDateTime.now();
+                    bike.setIsAvailable(false);
+                    bike.setLastUsedTime(tripStartTime);
+                    System.out.println(" Reserving the bike with the "+bikeID+". Please following the on-screen instructions." + 
                                         "to locate the bike and start your pleasant journey.");
-                ActiveRental activeRental = new ActiveRental(bikeID,emailAddress,tripStartTime);
-                activeRentalsList.add(activeRental);
-                break;
+
+                    String tripLogId = "TS" + System.currentTimeMillis();
+                    String tripEvent = "Trip started for bikeID " + bikeID + " by " + emailAddress + " at " +bike.getLocation();
+                    ERyderLog tripStartLog = new ERyderLog(tripLogId, tripEvent, LocalDateTime.now());
+                    systemLogs.push(tripStartLog);
+
+                    ActiveRental activeRental = new ActiveRental(bikeID,emailAddress,tripStartTime);
+                    activeRentalsList.add(activeRental);
+
+                    BikeRequest request = new BikeRequest(emailAddress,bike.getLocation(),LocalDateTime.now());
+                    bikeRequest.add(request);
+                    break;
+                    
+                }
             }
         }
         else{
@@ -35,10 +59,10 @@ public class BikeService {
     }
     public String validateLocation(String location){
         for(Bike bike : BikeDatabase.bikes){
-            if(location.equals(bike.getLocation()) && bike.isAvailable()){
+            if(location.equals(bike.getLocation()) && bike.getIsAvailable()){
                 System.out.println("A bike is available at the location you requested.");
                 locationValid = true;
-                return bike.getbikeID();
+                return bike.getBikeID();
             }
 
         }
@@ -58,12 +82,27 @@ public class BikeService {
         Iterator<Bike>bikeIterator = BikeDatabase.bikes.iterator();
         while(bikeIterator.hasNext()){
             Bike bike = bikeIterator.next();
-            if(bike.getbikeID().equals(bikeID)){
-                bike.setAvailable(true);
+            if(bike.getBikeID().equals(bikeID)){
+                bike.setIsAvailable(true);
                 bike.setLastUsedTime(LocalDateTime.now());
                 System.out.println("Your trip has ended. Thank you for riding with us.");
+
+                String logId = "TE" + System.currentTimeMillis();
+                String event = "Trip ended for bikeID " + bikeID + " by " + emailAddress + " at " + bike.getLocation();
+                LocalDateTime timestamp = LocalDateTime.now();
+                ERyderLog endLog = new ERyderLog(logId, event, timestamp);
+                systemLogs.push(endLog);
+                
+                if(!bikeRequest.isEmpty()){
+                    bikeRequest.poll();
+                }
                 break;
             }
+        }
+    }
+    public void viewSystemLogs(){
+        for(ERyderLog eRyderLog : systemLogs){
+            System.out.println(eRyderLog);
         }
     }
 }
