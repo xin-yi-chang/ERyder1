@@ -25,9 +25,10 @@ public class AdminPanel {
             
             int choice = sc.nextInt();
             sc.nextLine();
+            RegisteredUsers newUser = null;
             switch (choice) {
                 case 1:
-                    userService.addNewUsers();
+                    newUser = userService.addNewUsers();
                     break;
                 case 2:
                     userService.viewRegisteredUsers();
@@ -40,7 +41,7 @@ public class AdminPanel {
                     break;
                 case 5:
                     RentalService bikeRental = new RentalService(bikeService);
-                    bikeRental.simulateApplicationInput();
+                    bikeRental.simulateApplicationInput(newUser);
                     break;
                 case 6:
                     bikeService.viewSystemLogs();

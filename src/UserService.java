@@ -5,11 +5,12 @@ import java.util.Iterator;
 public class UserService {
     List<RegisteredUsers> registeredUsers = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
-    public void addNewUsers() {
+    public RegisteredUsers addNewUsers() {
         System.out.println("\n=== Add New Users ===");
         System.out.println("How many users would you like to add? ");
         int num = sc.nextInt();
         sc.nextLine();
+        RegisteredUsers newUser=null;
         for (int i = 0; i < num; i++) {
             System.out.println("\n=== Adding User " + (i + 1) + " ===");
             
@@ -74,15 +75,21 @@ public class UserService {
                 lastThreeTrips[j] = tripBuilder.toString();
             }
             
-
-            RegisteredUsers newUser = new RegisteredUsers(fullName, emailAddress, dateOfBirth, 
-                                                          cardNumber, cardProvider, cardExpiryDate, 
-                                                          cvv, userType, lastThreeTrips);
             
-
+            if (userType.equalsIgnoreCase("VIP")) {
+                    newUser = new VIPUser(fullName, emailAddress, dateOfBirth, 
+                                                          cardNumber, cardProvider, cardExpiryDate, 
+                                                          cvv, userType, lastThreeTrips);} 
+            else {
+                    newUser = new RegularUser(fullName, emailAddress, dateOfBirth, 
+                                                          cardNumber, cardProvider, cardExpiryDate, 
+                                                          cvv, userType, lastThreeTrips);}
             registeredUsers.add(newUser);
+
             System.out.println("User added successfully!");
+           
         }
+        return newUser;
     }
     
     public void viewRegisteredUsers() {

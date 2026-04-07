@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
+
 public class BikeService {
     private String emailAddress;
     private LocalDateTime tripStartTime;
@@ -70,36 +70,7 @@ public class BikeService {
                         "requested. Please try again later.");
         return null;
     }
-    public void removeTrip(String bikeID){
-        Iterator<ActiveRental> iterator = activeRentalsList.iterator();
-        while(iterator.hasNext()){
-            ActiveRental rental = iterator.next();
-            if(rental.getBikeID().equals(bikeID)){
-                iterator.remove();
-                break;
-            }
-        }
-        Iterator<Bike>bikeIterator = BikeDatabase.bikes.iterator();
-        while(bikeIterator.hasNext()){
-            Bike bike = bikeIterator.next();
-            if(bike.getBikeID().equals(bikeID)){
-                bike.setIsAvailable(true);
-                bike.setLastUsedTime(LocalDateTime.now());
-                System.out.println("Your trip has ended. Thank you for riding with us.");
-
-                String logId = "TE" + System.currentTimeMillis();
-                String event = "Trip ended for bikeID " + bikeID + " by " + emailAddress + " at " + bike.getLocation();
-                LocalDateTime timestamp = LocalDateTime.now();
-                ERyderLog endLog = new ERyderLog(logId, event, timestamp);
-                systemLogs.push(endLog);
-                
-                if(!bikeRequest.isEmpty()){
-                    bikeRequest.poll();
-                }
-                break;
-            }
-        }
-    }
+    
     public void viewSystemLogs(){
         for(ERyderLog eRyderLog : systemLogs){
             System.out.println(eRyderLog);
